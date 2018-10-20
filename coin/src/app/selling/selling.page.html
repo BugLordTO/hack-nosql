@@ -6,4 +6,43 @@
 
 <ion-content padding>
 
+  <text-center>
+  <p>Available Balance 10 BTC</p>
+
+  <ion-row>
+    <ion-item col-6>
+      <ion-label>
+        BTC to sell
+      </ion-label>
+    </ion-item>
+
+    <ion-item col-6>
+      <ion-input required type="number" placeholder="input yout BTC"></ion-input>
+    </ion-item>
+  </ion-row>
+
+  <ion-row>
+      <ion-item col-6>
+        <ion-label>Price per USD</ion-label>
+      </ion-item>
+  
+      <ion-item col-6>
+        <ion-label>100</ion-label>
+      </ion-item>
+    </ion-row>
+  
+
+  <ion-row>
+    <ion-item col-6>
+      <ion-label>USD your receive</ion-label>
+    </ion-item>
+
+    <ion-item col-6>
+      <ion-label>10,000</ion-label>
+    </ion-item>
+  </ion-row>
+
+  <ion-button shape="round" color="primary" fill="outline" (click)="home()">Order</ion-button>
+
+
 </ion-content>

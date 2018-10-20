@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-buying',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BuyingPage implements OnInit {
 
-  constructor() { }
+  constructor(private navParam: NavParams) {
+    console.log(this.navParam.get("id"));
+   }
 
   ngOnInit() {
   }

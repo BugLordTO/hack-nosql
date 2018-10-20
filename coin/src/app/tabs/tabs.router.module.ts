@@ -22,7 +22,7 @@ const routes: Routes = [
         component: HomePage
       },
       {
-        path: 'about',
+        path: 'History',
         outlet: 'about',
         component: AboutPage
       },
