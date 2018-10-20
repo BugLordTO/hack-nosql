@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams } from '@ionic/angular';
+import { NavParams, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-buying',
@@ -8,11 +8,14 @@ import { NavParams } from '@ionic/angular';
 })
 export class BuyingPage implements OnInit {
 
-  constructor() {
+  constructor(public navCtrl: NavController) {
    // console.log(this.navParam.get("id"));
    }
 
   ngOnInit() {
+  }
+  gohome(){
+    this.navCtrl.navigateBack("");
   }
 
 }
