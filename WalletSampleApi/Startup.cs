@@ -49,7 +49,7 @@ namespace WalletSampleApi
                     PropertyNameHandling.CamelCase;
             });
 
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
