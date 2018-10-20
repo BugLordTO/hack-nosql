@@ -37,7 +37,7 @@ namespace WalletSampleApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<CustomerWallet> Get(string id)
         {
-            var customer = _customerCollection.Find(it => it.Username.Equals(id, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var customer = _customerCollection.Find(it => it.Username.ToLower() == id.ToLower()).FirstOrDefault();
             customer.TotalCoins = customer.Coins.GroupBy(it => it.Symbol).Select(it => new TotalCoin
             {
                 Symbol = it.Key,
@@ -50,6 +50,7 @@ namespace WalletSampleApi.Controllers
         [HttpPost]
         public void Post([FromBody] CoinPriceUpdate updateCoin)
         {
+            updateCoin.Id = new Guid().ToString();
             _coinPriceUpdateCollection.InsertOne(updateCoin);
         }
 
@@ -63,7 +64,7 @@ namespace WalletSampleApi.Controllers
         public CoinPrice GetCoinPrice(string id)
         {
             var lastUpdateCoin = GetCoinPrice();
-            return lastUpdateCoin?.PriceList?.FirstOrDefault(it => it.Symbol.Equals(id, StringComparison.CurrentCultureIgnoreCase));
+            return lastUpdateCoin?.PriceList?.FirstOrDefault(it => it.Symbol.ToLower() == id.ToLower());
         }
 
         [HttpPost("{username}/{symbol}/{coinamount}")]
@@ -72,7 +73,7 @@ namespace WalletSampleApi.Controllers
             var coin = GetCoinPrice(symbol);
             if (coin == null) return;
 
-            var customer = _customerCollection.Find(it => it.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var customer = _customerCollection.Find(it => it.Username.ToLower() == username.ToLower()).FirstOrDefault();
             if (customer == null) return;
 
             var customerCoin = new CustomerCoin
@@ -85,7 +86,7 @@ namespace WalletSampleApi.Controllers
             };
             customer.Coins.Add(customerCoin);
 
-            _customerCollection.ReplaceOne(it => it.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase), customer);
+            _customerCollection.ReplaceOne(it => it.Username.ToLower() == username.ToLower(), customer);
         }
 
         [HttpPost("{username}/{symbol}/{coinamount}")]
@@ -94,7 +95,7 @@ namespace WalletSampleApi.Controllers
             var coin = GetCoinPrice(symbol);
             if (coin == null) return;
 
-            var customer = _customerCollection.Find(it => it.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var customer = _customerCollection.Find(it => it.Username.ToLower() == username.ToLower()).FirstOrDefault();
             if (customer == null) return;
 
             var customerCoin = new CustomerCoinSell
@@ -114,6 +115,7 @@ namespace WalletSampleApi.Controllers
         {
             _customerCollection.InsertOne(new CustomerWallet
             {
+                Id = new Guid().ToString(),
                 Username = id,
                 Coins = new List<CustomerCoin>(),
                 CoinSells = new List<CustomerCoinSell>(),

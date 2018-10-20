@@ -21,16 +21,15 @@
         </ion-navbar>  -->
   </ion-header>
   <ion-list>
-    <ion-item (click)="selling()">
-      <ion-label>Bitcoin</ion-label>
-      <ion-label> 3</ion-label>
-      <ion-label> BTC</ion-label>
+    <ion-item *ngFor="let item of data.totalCoins" (click)="selling()">
+      <ion-label>{{item.symbol}}</ion-label>
+      <ion-label> {{item.amount}}</ion-label>
     </ion-item>
-    <ion-item (click)="selling()">
+    <!-- <ion-item (click)="selling()">
       <ion-label>Ripper</ion-label>
       <ion-label> 100 </ion-label>
       <ion-label> Xrp</ion-label>
-    </ion-item>
+    </ion-item> -->
   </ion-list>
   <ion-button (click)="buying()">+</ion-button>
 </ion-content>

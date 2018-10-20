@@ -7,6 +7,7 @@ namespace WalletSampleApi.Models
 {
     public class CoinPriceUpdate
     {
+        public string Id { get; set; }
         public DateTime At { get; set; }
         public List<CoinPrice> PriceList { get; set; }
     }
