@@ -50,6 +50,7 @@ namespace WalletSampleApi.Controllers
         [HttpPost]
         public void Post([FromBody] CoinPriceUpdate updateCoin)
         {
+            updateCoin.Id = new Guid().ToString();
             _coinPriceUpdateCollection.InsertOne(updateCoin);
         }
 
@@ -114,6 +115,7 @@ namespace WalletSampleApi.Controllers
         {
             _customerCollection.InsertOne(new CustomerWallet
             {
+                Id = new Guid().ToString(),
                 Username = id,
                 Coins = new List<CustomerCoin>(),
                 CoinSells = new List<CustomerCoinSell>(),

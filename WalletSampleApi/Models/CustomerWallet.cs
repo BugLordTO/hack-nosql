@@ -7,6 +7,7 @@ namespace WalletSampleApi.Models
 {
     public class CustomerWallet
     {
+        public string Id { get; set; }
         public string Username { get; set; }
         public List<CustomerCoin> Coins { get; set; }
         public List<CustomerCoinSell> CoinSells { get; set; }
