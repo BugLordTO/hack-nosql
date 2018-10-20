@@ -8,8 +8,8 @@ import { NavParams } from '@ionic/angular';
 })
 export class BuyingPage implements OnInit {
 
-  constructor(private navParam: NavParams) {
-    console.log(this.navParam.get("id"));
+  constructor() {
+   // console.log(this.navParam.get("id"));
    }
 
   ngOnInit() {

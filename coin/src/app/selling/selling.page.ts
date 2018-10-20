@@ -14,7 +14,7 @@ export class SellingPage implements OnInit {
   }
   
   home(){
-    this.navCtrl.navigateForward("home");
+    this.navCtrl.navigateBack("home");
   }
 
 }

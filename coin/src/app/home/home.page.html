@@ -5,9 +5,9 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-header>
-        <!-- <ion-navbar>
-          <ion-buttons start>
+  <ion-header>
+    <!--  <ion-navbar>
+           <ion-buttons start>
             <button ion-button icon-only>
               <ion-icon name="contact"></ion-icon>
             </button>
@@ -18,43 +18,19 @@
               <ion-icon name="search"></ion-icon>
             </button>
           </ion-buttons>
-        </ion-navbar> -->
-      </ion-header>
-<ion-list>
-<ion-row>
-    <ion-item col-4>
+        </ion-navbar>  -->
+  </ion-header>
+  <ion-list>
+    <ion-item (click)="selling()">
       <ion-label>Bitcoin</ion-label>
-    </ion-item>
-
-    <ion-item col-4>
       <ion-label> 3</ion-label>
+      <ion-label> BTC</ion-label>
     </ion-item>
-
-    <ion-item col-4>
-        <ion-label> BTC</ion-label>
-      </ion-item>
-  </ion-row>
-
-  <ion-row>
-      <ion-item col-4>
-        <ion-label>Ripper</ion-label>
-      </ion-item>
-  
-      <ion-item col-4>
-        <ion-label> 100 </ion-label>
-      </ion-item>
-  
-      <ion-item col-4>
-          <ion-label> Xrp</ion-label>
-        </ion-item>
-    </ion-row>
-
-
-
-</ion-list>
-
-
-
+    <ion-item (click)="selling()">
+      <ion-label>Ripper</ion-label>
+      <ion-label> 100 </ion-label>
+      <ion-label> Xrp</ion-label>
+    </ion-item>
   </ion-list>
-  <ion-button (click)="buying()" >+</ion-button>
+  <ion-button (click)="buying()">+</ion-button>
 </ion-content>
