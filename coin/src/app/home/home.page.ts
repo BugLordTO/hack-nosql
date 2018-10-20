@@ -24,7 +24,7 @@ export class HomePage {
 
   ionViewDidEnter() {
 
-    let url = GlobalVarible.host + "/GetCoinPrice";
+    let url = GlobalVarible.host + "/Get/" + GlobalVarible.username;
     console.log("Url: " + url);
 
     this.http.get(url).subscribe((response) => {
