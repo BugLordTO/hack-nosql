@@ -9,6 +9,8 @@ namespace WalletSampleApi.Models
     {
         public string Username { get; set; }
         public List<CustomerCoin> Coins { get; set; }
+        public List<CustomerCoinSell> CoinSells { get; set; }
+        public List<TotalCoin> TotalCoins { get; set; }
     }
 
     public class CustomerCoin
@@ -26,5 +28,28 @@ namespace WalletSampleApi.Models
         /// มูลค่าหากแลกเป็น USD ตอนนี้
         /// </summary>
         public double USDValue { get; set; }
+    }
+
+    public class CustomerCoinSell
+    {
+        public string Symbol { get; set; }
+        /// <summary>
+        /// ราคาตอนซื้อ
+        /// </summary>
+        public double SellingRate { get; set; }
+        /// <summary>
+        /// ซื้อเมื่อไหร่
+        /// </summary>
+        public DateTime SellingAt { get; set; }
+        /// <summary>
+        /// มูลค่าหากแลกเป็น USD ตอนนี้
+        /// </summary>
+        public double USDValue { get; set; }
+    }
+
+    public class TotalCoin
+    {
+        public string Symbol { get; set; }
+        public double Amount { get; set; }
     }
 }

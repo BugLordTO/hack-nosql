@@ -37,7 +37,13 @@ namespace WalletSampleApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<CustomerWallet> Get(string id)
         {
-            return _customerCollection.Find(it => it.Username.Equals(id, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var customer = _customerCollection.Find(it => it.Username.Equals(id, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            customer.TotalCoins = customer.Coins.GroupBy(it => it.Symbol).Select(it => new TotalCoin
+            {
+                Symbol = it.Key,
+                Amount = it.Sum(tc => tc.USDValue / tc.BuyingRate),
+            }).ToList();
+            return customer;
         }
 
         // POST api/values
@@ -46,7 +52,7 @@ namespace WalletSampleApi.Controllers
         {
             _coinPriceUpdateCollection.InsertOne(updateCoin);
         }
-        
+
         [HttpGet]
         public CoinPriceUpdate GetCoinPrice()
         {
@@ -57,30 +63,61 @@ namespace WalletSampleApi.Controllers
         public CoinPrice GetCoinPrice(string id)
         {
             var lastUpdateCoin = GetCoinPrice();
-            return lastUpdateCoin.PriceList.FirstOrDefault(it => it.Symbol.Equals(id, StringComparison.CurrentCultureIgnoreCase));
+            return lastUpdateCoin?.PriceList?.FirstOrDefault(it => it.Symbol.Equals(id, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        [HttpPost]
-        public void BuyCoin(string username, string symbol, double coinamount){
+        [HttpPost("{username}/{symbol}/{coinamount}")]
+        public void BuyCoin(string username, string symbol, double coinamount)
+        {
             var coin = GetCoinPrice(symbol);
+            if (coin == null) return;
 
             var customer = _customerCollection.Find(it => it.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            customer.Coins.Add(new CustomerCoin{
+            if (customer == null) return;
+
+            var customerCoin = new CustomerCoin
+            {
                 Symbol = coin.Symbol,
                 BuyingAt = DateTime.UtcNow,
                 BuyingRate = coin.Buy,
-                USDValue  = coinamount * coin.Buy,
-            });
+                USDValue = coinamount * coin.Buy,
+
+            };
+            customer.Coins.Add(customerCoin);
+
             _customerCollection.ReplaceOne(it => it.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase), customer);
         }
-        
-        [HttpPost("{id}")]
-        public void RegisterCustomer(string id){
-            _customerCollection.InsertOne(new CustomerWallet{
-                Username = id,
-                Coins = new List<CustomerCoin>(),
-            });
+
+        [HttpPost("{username}/{symbol}/{coinamount}")]
+        public void SellCoin(string username, string symbol, double coinamount)
+        {
+            var coin = GetCoinPrice(symbol);
+            if (coin == null) return;
+
+            var customer = _customerCollection.Find(it => it.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            if (customer == null) return;
+
+            var customerCoin = new CustomerCoinSell
+            {
+                Symbol = coin.Symbol,
+                SellingAt = DateTime.UtcNow,
+                SellingRate = coin.Sell,
+                USDValue = coinamount * coin.Sell,
+            };
+            customer.CoinSells.Add(customerCoin);
+
+            _customerCollection.ReplaceOne(it => it.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase), customer);
         }
 
+        [HttpPost("{id}")]
+        public void RegisterCustomer(string id)
+        {
+            _customerCollection.InsertOne(new CustomerWallet
+            {
+                Username = id,
+                Coins = new List<CustomerCoin>(),
+                CoinSells = new List<CustomerCoinSell>(),
+            });
+        }
     }
 }
