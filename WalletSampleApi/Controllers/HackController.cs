@@ -25,7 +25,6 @@ namespace WalletSampleApi.Controllers
             _coinPriceUpdateCollection = _database.GetCollection<CoinPriceUpdate>("CoinPriceUpdates");
         }
 
-        // GET api/values
         [HttpGet]
         public CoinPriceUpdate GetCoinPrice()
         {
@@ -37,6 +36,50 @@ namespace WalletSampleApi.Controllers
         {
             var lastUpdateCoin = GetCoinPrice();
             return lastUpdateCoin.PriceList.FirstOrDefault(it=>it.Symbol.Equals(id,StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        [HttpPost]
+        public void BuyCoin(string username, string symbol, double coinamount){
+            var coin = GetCoinPrice(symbol);
+
+            var customer = _customerCollection.Find(it=>it.Username.Equals(username,StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            customer.Coins.Add(new CustomerCoin{
+                Symbol = coin.Symbol,
+                BuyingAt = DateTime.UtcNow,
+                BuyingRate = coin.Buy,
+                USDValue  = coinamount * coin.Buy,
+            });
+            _customerCollection.ReplaceOne(it=>it.Username.Equals(username,StringComparison.CurrentCultureIgnoreCase), customer);
+        }
+
+        [HttpPost]
+        public void UpdateCoin([FromBody]CoinPriceUpdate request){
+            _coinPriceUpdateCollection.InsertOne(request);
+        }
+
+        [HttpGet]
+        public IEnumerable<CustomerWallet> GetCustomers(){
+            return _customerCollection.Find(it=>true).ToList();
+        }
+        
+        [HttpGet("{id}")]
+        public CustomerWallet GetCustomer(string id){
+            return _customerCollection.Find(it=>it.Username.Equals(id,StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+        }
+
+        [HttpPost("{id}")]
+        public void RegisterCustomer(string id){
+            _customerCollection.InsertOne(new CustomerWallet{
+                Username = id,
+                Coins = new List<CustomerCoin>(),
+            });
+        }
+
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            return new string[] { "jdoe", "ptparker" };
         }
 
         // GET api/values/5
