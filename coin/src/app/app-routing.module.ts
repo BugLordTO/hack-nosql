@@ -6,7 +6,8 @@ const routes: Routes = [
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'buying', loadChildren: './buying/buying.module#BuyingPageModule' },
   { path: 'buying/:id', loadChildren: './buying/buying.module#BuyingPageModule' },
-  { path: 'selling', loadChildren: './selling/selling.module#SellingPageModule' }
+  { path: 'selling', loadChildren: './selling/selling.module#SellingPageModule' },
+  { path: 'update', loadChildren: './update/update.module#UpdatePageModule' }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
